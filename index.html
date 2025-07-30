@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Aero Multicenter</title>
+  <link rel="stylesheet" href="https://unpkg.com/xp.css">
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      background: #008080 url('https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_XP_Bliss_wallpaper.jpg') center center no-repeat;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+      color: #000;
+    }
+    nav {
+      width: 200px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      border-right: 2px solid #ccc;
+    }
+    nav button {
+      margin: 6px 0;
+      padding: 10px;
+      border: 2px outset #fff;
+      background: #f0f0f0;
+      color: #000;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    nav button:hover {
+      background: #dcdcdc;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      overflow-y: auto;
+    }
+    .tab {
+      display: none;
+    }
+    .tab.active {
+      display: block;
+    }
+    iframe {
+      width: 100%;
+      height: 350px;
+      border: 2px inset #aaa;
+      border-radius: 6px;
+      margin-top: 15px;
+    }
+    input[type="text"], textarea {
+      padding: 8px;
+      width: 100%;
+      border: 2px inset #ccc;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+    audio {
+      width: 100%;
+      margin-top: 10px;
+    }
+    #loaderContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body onload="hideLoader()">
+  <div id="loaderContainer">
+    <div style="text-align:center;">
+      <p>Loading Aero Multicenter...</p>
+      <progress id="globalLoader" value="0" max="100"></progress>
+    </div>
+  </div>
+
+  <nav>
+    <button onclick="showTab('start')">🏠 Startpage</button>
+    <button onclick="showTab('youtube')">📺 YouTube</button>
+    <button onclick="showTab('chat')">💬 Chatroom</button>
+    <button onclick="showTab('music')">🎵 Music</button>
+    <button onclick="showTab('games')">🎮 Games</button>
+    <button onclick="showTab('wallpapers')">🖼️ Wallpapers</button>
+    <button onclick="showTab('feedback')">📝 Feedback</button>
+  </nav>
+
+  <div class="content">
+    <div id="start" class="tab active">
+      <h1>Welcome to Aero Multicenter!</h1>
+      <p>Paste a YouTube link in the YouTube tab to preview it here:</p>
+      <iframe id="previewFrame" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allowfullscreen onload="setProgress(60)"></iframe>
+      <p style="margin-top: 15px; font-size: 0.9em; color: #000;">
+        v1.0.1 <span style="background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">BETA</span>
+      </p>
+    </div>
+
+    <div id="youtube" class="tab">
+      <h2>🎬 Watch a YouTube Video</h2>
+      <input type="text" id="youtubeInput" placeholder="Enter YouTube link here">
+      <button onclick="updateVideo()">Load Video</button>
+      <iframe id="youtubeFrame" allowfullscreen onload="setProgress(90)"></iframe>
+    </div>
+
+    <div id="chat" class="tab">
+      <h2>💬 xat.com Public Chatroom</h2>
+      <iframe src="https://xat.com/embed/chat.php" allowfullscreen onload="setProgress(80)"></iframe>
+      <div style="margin-top:20px; text-align:center;">
+        <a href="https://frutigeraeroarchive.org/" target="_blank">
+          <img src="YOUR-IMAGE.jpg" alt="Visit Frutiger Aero Archive" width="300" style="border-radius:12px;">
+        </a>
+      </div>
+    </div>
+
+    <div id="music" class="tab">
+      <h2>🎵 Background Music</h2>
+      <input type="text" id="musicInput" placeholder="Enter music URL (.mp3)">
+      <button onclick="updateMusic()">Play Music</button>
+      <audio id="bgMusic" controls loop></audio>
+
+      <div class="field-row" style="width: 300px">
+        <label for="range25">Volume:</label>
+        <label for="range26">Low</label>
+        <input id="range26" type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVolume(this.value)" />
+        <label for="range27">High</label>
+      </div>
+    </div>
+
+    <div id="games" class="tab">
+      <h2>🎮 Games</h2>
+      <p>Play embedded web games below:</p>
+      <iframe src="https://classic.minecraft.net/" title="Minecraft Classic" onload="setProgress(85)"></iframe>
+    </div>
+
+    <div id="wallpapers" class="tab">
+      <h2>🖼️ Wallpapers</h2>
+      <p>Explore some classic Aero and Bliss-style wallpapers:</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_XP_Bliss_wallpaper.jpg" width="100%" style="border-radius:8px; margin-bottom:10px;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Aurora_wallpaper.png" width="100%" style="border-radius:8px;">
+    </div>
+
+    <div id="feedback" class="tab">
+      <h2>📝 Feedback</h2>
+      <p>Please describe what should be improved or added:</p>
+      <textarea rows="5" placeholder="What's missing? What could be better? (Be specific!)"></textarea>
+      <button onclick="alert('Thanks for your feedback!')">Send Feedback</button>
+    </div>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    function updateVideo() {
+      const input = document.getElementById('youtubeInput').value;
+      const videoId = extractYouTubeID(input);
+      if (videoId) {
+        const embedURL = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        document.getElementById('youtubeFrame').src = embedURL;
+        document.getElementById('previewFrame').src = embedURL;
+        setProgress(70);
+      }
+    }
+
+    function extractYouTubeID(url) {
+      const regExp = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&?#]+)/;
+      const match = url.match(regExp);
+      return match ? match[1] : null;
+    }
+
+    function updateMusic() {
+      const musicURL = document.getElementById('musicInput').value;
+      const player = document.getElementById('bgMusic');
+      player.src = musicURL;
+      player.play();
+      setProgress(100);
+    }
+
+    function setVolume(val) {
+      document.getElementById('bgMusic').volume = val;
+    }
+
+    function hideLoader() {
+      let progress = 0;
+      const interval = setInterval(() => {
+        if (progress >= 100) {
+          clearInterval(interval);
+          document.getElementById('loaderContainer').style.display = 'none';
+        } else {
+          progress += 10;
+          document.getElementById('globalLoader').value = progress;
+        }
+      }, 150);
+    }
+
+    function setProgress(val) {
+      const p = document.getElementById('globalLoader');
+      if (p) p.value = val;
+    }
+  </script>
+
+</body>
+</html>
