@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Aero's Basement</title>
+  <link rel="stylesheet" href="https://unpkg.com/xp.css">
+  <link rel="icon" type="image/png" href="https://frutigeraeroarchive.org/images/favicon.png">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      background: linear-gradient(to bottom right, rgba(18,50,100,0.9), rgba(34,80,120,0.8)), url('https://frutigeraeroarchive.org/images/wallpapers/1.jpg') center center no-repeat;
+      background-size: cover;
+    }
+    header {
+      backdrop-filter: blur(12px);
+      background: rgba(0,0,0,0.6);
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.4rem;
+      letter-spacing: 1.2px;
+    }
+    nav {
+      width: 200px;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255,255,255,0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 60px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset -1px 0 1px rgba(255,255,255,0.2);
+    }
+    nav button {
+      margin: 6px;
+      padding: 10px;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 10px;
+      backdrop-filter: blur(6px);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    nav button:hover {
+      background: rgba(255,255,255,0.4);
+    }
+    .content {
+      margin-left: 200px;
+      padding: 2rem;
+    }
+    .tab {
+      display: none;
+    }
+    .tab.active {
+      display: block;
+    }
+    iframe, audio {
+      width: 100%;
+      border-radius: 12px;
+      border: none;
+      margin-top: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      backdrop-filter: blur(4px);
+      font-size: 1rem;
+    }
+    #aero-ring {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body onload="hideLoader()">
+  <header>
+    <h1>Aero's Basement</h1>
+    <p style="font-size: 0.9rem; opacity: 0.7;">Created by Aero – v1.0.3</p>
+  </header>
+
+  <nav>
+    <button onclick="showTab('start')">🏠 Start</button>
+    <button onclick="showTab('youtube')">📺 YouTube</button>
+    <button onclick="showTab('chat')">💬 Chat</button>
+    <button onclick="showTab('music')">🎵 Music</button>
+    <button onclick="showTab('feedback')">📝 Feedback</button>
+  </nav>
+
+  <div class="content">
+    <div id="start" class="tab active">
+      <h2>Welcome to Aero Multicenter</h2>
+      <a href="https://frutigeraeroarchive.org/">
+        <img src="https://frutigeraeroarchive.org/images/ads/fa_archive_180x180.png" alt="Frutiger Aero Archive">
+      </a>
+      <div id="aero-ring">
+        <script src="https://frutigeraeroarchive.org/javascript/aero-webring.js"></script>
+      </div>
+    </div>
+
+    <div id="youtube" class="tab">
+      <h2>Watch a YouTube Video</h2>
+      <input type="text" id="youtubeInput" placeholder="Enter YouTube link">
+      <button onclick="updateVideo()">Play</button>
+      <iframe id="youtubeFrame" allowfullscreen></iframe>
+    </div>
+
+    <div id="chat" class="tab">
+      <h2>Join the Chat</h2>
+      <iframe src="https://xat.com/embed/chat.php" allowfullscreen></iframe>
+    </div>
+
+    <div id="music" class="tab">
+      <h2>Play SoundCloud Music</h2>
+      <input type="text" id="musicInput" placeholder="Enter SoundCloud track URL">
+      <button onclick="updateMusic()">Play</button>
+      <iframe id="bgMusic" height="166" scrolling="no" frameborder="no" allow="autoplay"></iframe>
+    </div>
+
+    <div id="feedback" class="tab">
+      <h2>Send Feedback</h2>
+      <textarea rows="5" placeholder="What should be improved?"></textarea>
+      <button onclick="alert('Thanks for your feedback!')">Submit</button>
+    </div>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    function updateVideo() {
+      const url = document.getElementById('youtubeInput').value;
+      const id = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
+      document.getElementById('youtubeFrame').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+    }
+
+    function updateMusic() {
+      const url = document.getElementById('musicInput').value;
+      const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&auto_play=true`;
+      document.getElementById('bgMusic').src = embedUrl;
+    }
+
+    function hideLoader() {
+      const loader = document.getElementById('loaderContainer');
+      if (loader) loader.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
