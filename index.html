@@ -5,20 +5,6 @@
   <title>Aero Multicenter</title>
   <link rel="stylesheet" href="https://unpkg.com/xp.css" />
   <style>
-    /* Aero Banner */
-    #aero-banner {
-      background: linear-gradient(135deg, #4dd0e1, #006064);
-      color: white;
-      text-align: center;
-      padding: 30px 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      font-weight: 700;
-      font-size: 3rem;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
-      border-bottom: 4px solid #00838f;
-      user-select: none;
-    }
-
     body {
       margin: 0;
       display: flex;
@@ -29,7 +15,22 @@
       font-family: 'Segoe UI', sans-serif;
       color: #000;
     }
-
+    /* Banner oben */
+    #banner {
+      width: 100%;
+      background: linear-gradient(90deg, #0078d7, #00aaff);
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      padding: 15px 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
     nav {
       width: 200px;
       background: rgba(255, 255, 255, 0.6);
@@ -38,8 +39,8 @@
       flex-direction: column;
       padding: 10px;
       border-right: 2px solid #ccc;
+      margin-top: 60px; /* damit Nav unter dem Banner startet */
     }
-
     nav button {
       margin: 6px 0;
       padding: 10px;
@@ -50,26 +51,22 @@
       cursor: pointer;
       transition: 0.2s;
     }
-
     nav button:hover {
       background: #dcdcdc;
     }
-
     .content {
       flex: 1;
       padding: 20px;
       background: rgba(255, 255, 255, 0.7);
       overflow-y: auto;
+      padding-top: 80px; /* Abstand zum fixierten Banner */
     }
-
     .tab {
       display: none;
     }
-
     .tab.active {
       display: block;
     }
-
     iframe {
       width: 100%;
       height: 350px;
@@ -77,21 +74,17 @@
       border-radius: 6px;
       margin-top: 15px;
     }
-
-    input[type="text"],
-    textarea {
+    input[type="text"], textarea {
       padding: 8px;
       width: 100%;
       border: 2px inset #ccc;
       border-radius: 4px;
       margin-top: 10px;
     }
-
     audio {
       width: 100%;
       margin-top: 10px;
     }
-
     #loaderContainer {
       position: fixed;
       top: 0;
@@ -104,48 +97,9 @@
       align-items: center;
       z-index: 9999;
     }
-
-    /* Aero Webring Styles */
-    #aero-ring {
-      background: linear-gradient(
-        to top,
-        rgb(5, 5, 5) 0%,
-        rgb(22, 22, 22) 47%,
-        rgb(34, 34, 34) 47%,
-        rgb(163, 163, 163) 100%
-      );
-      border-radius: 8px;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.5),
-        inset 0 2px 1px rgba(255, 255, 255, 0.2),
-        inset 0 -2px 1px rgba(0, 0, 0, 0.35);
-      margin: 10px auto 0 auto;
-      padding: 0.75rem;
-      max-width: 15rem;
-      font-family: Arial, sans-serif;
-      color: white !important;
-    }
-
-    #aero-ring a,
-    #aero-ring a:visited {
-      color: white !important;
-    }
-
-    #aero-ring a:focus,
-    #aero-ring a:hover {
-      color: #47e05b !important;
-    }
-
-    #aero-ring a:active {
-      color: #72f183 !important;
-    }
   </style>
 </head>
 <body onload="hideLoader()">
-
-  <!-- Aero Banner -->
-  <div id="aero-banner">
-    Aero's Basement
-  </div>
 
   <div id="loaderContainer">
     <div style="text-align:center;">
@@ -153,6 +107,11 @@
       <progress id="globalLoader" value="0" max="100"></progress>
     </div>
   </div>
+
+  <!-- Banner oben -->
+  <header id="banner">
+    Aero's Basement
+  </header>
 
   <nav>
     <button onclick="showTab('start')">🏠 Startpage</button>
@@ -165,18 +124,50 @@
   <div class="content">
     <div id="start" class="tab active">
       <h1>Welcome to Aero Multicenter!</h1>
-      
-      <a href="https://frutigeraeroarchive.org/">
-        <img src="https://frutigeraeroarchive.org/images/ads/fa_archive_180x180.png" alt="Frutiger Aero Archive" />
-      </a>
+      <p>Paste a YouTube link in the YouTube tab to preview it here:</p>
+      <iframe id="previewFrame" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allowfullscreen onload="setProgress(60)"></iframe>
+      <p style="margin-top: 15px; font-size: 0.9em; color: #000;">
+        v1.0.1 <span style="background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">BETA</span>
+      </p>
 
       <div id="aero-ring">
         <script src="https://frutigeraeroarchive.org/javascript/aero-webring.js"></script>
       </div>
 
-      <p style="margin-top: 15px; font-size: 0.9em; color: #000;">
-        v1.0.1 <span style="background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">BETA</span>
-      </p>
+      <!-- CSS below is optional -->
+      <style>
+        #aero-ring {
+          background: linear-gradient(
+          to top,
+          rgb(5, 5, 5) 0%,
+          rgb(22, 22, 22) 47%,
+          rgb(34, 34, 34) 47%,
+          rgb(163, 163, 163) 100%
+        );
+          border-radius: 8px;
+          box-shadow: 0 0 4px rgba(0, 0, 0, 0.5),
+          inset 0 2px 1px rgba(255, 255, 255, 0.2),
+          inset 0 -2px 1px rgba(0, 0, 0, 0.35);
+          margin: 10px auto 0px auto;
+          padding: 0.75rem;
+          max-width: 15rem;
+          font-family: Arial, sans-serif;
+        }
+
+        #aero-ring a,
+        #aero-ring a:visited {
+          color: white !important;
+        }
+        #aero-ring a:focus,
+        #aero-ring a:hover {
+          color: #47e05b !important;
+        }
+        #aero-ring a:active {
+          color: #72f183 !important;
+        }
+      </style>
+
+      <a href="https://frutigeraeroarchive.org/"><img src="https://frutigeraeroarchive.org/images/ads/fa_archive_180x180.png" alt="Frutiger Aero Archive"></a>
     </div>
 
     <div id="youtube" class="tab">
