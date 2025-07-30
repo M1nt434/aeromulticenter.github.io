@@ -94,16 +94,13 @@
     <button onclick="showTab('youtube')">📺 YouTube</button>
     <button onclick="showTab('chat')">💬 Chatroom</button>
     <button onclick="showTab('music')">🎵 Music</button>
-    <button onclick="showTab('games')">🎮 Games</button>
-    <button onclick="showTab('wallpapers')">🖼️ Wallpapers</button>
     <button onclick="showTab('feedback')">📝 Feedback</button>
   </nav>
 
   <div class="content">
     <div id="start" class="tab active">
       <h1>Welcome to Aero Multicenter!</h1>
-      <p>Paste a YouTube link in the YouTube tab to preview it here:</p>
-      <iframe id="previewFrame" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allowfullscreen onload="setProgress(60)"></iframe>
+      <a href="https://frutigeraeroarchive.org/"><img src="https://frutigeraeroarchive.org/images/ads/fa_archive_180x180.png" alt="Frutiger Aero Archive"></a>
       <p style="margin-top: 15px; font-size: 0.9em; color: #000;">
         v1.0.1 <span style="background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">BETA</span>
       </p>
@@ -140,23 +137,10 @@
       </div>
     </div>
 
-    <div id="games" class="tab">
-      <h2>🎮 Games</h2>
-      <p>Play embedded web games below:</p>
-      <iframe src="https://classic.minecraft.net/" title="Minecraft Classic" onload="setProgress(85)"></iframe>
-    </div>
-
-    <div id="wallpapers" class="tab">
-      <h2>🖼️ Wallpapers</h2>
-      <p>Explore some classic Aero and Bliss-style wallpapers:</p>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_XP_Bliss_wallpaper.jpg" width="100%" style="border-radius:8px; margin-bottom:10px;">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Aurora_wallpaper.png" width="100%" style="border-radius:8px;">
-    </div>
-
     <div id="feedback" class="tab">
       <h2>📝 Feedback</h2>
       <p>Please describe what should be improved or added:</p>
-      <textarea rows="5" placeholder="What's missing? What could be better? (Be specific!)"></textarea>
+      <textarea rows="5" placeholder="What's missing? What could be better?"></textarea>
       <button onclick="alert('Thanks for your feedback!')">Send Feedback</button>
     </div>
   </div>
@@ -173,7 +157,6 @@
       if (videoId) {
         const embedURL = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
         document.getElementById('youtubeFrame').src = embedURL;
-        document.getElementById('previewFrame').src = embedURL;
         setProgress(70);
       }
     }
