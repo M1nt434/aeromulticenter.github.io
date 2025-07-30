@@ -2,64 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Aero Multicenter</title>
+  <title>Aero Multicenter v1.0.2</title>
   <link rel="stylesheet" href="https://unpkg.com/xp.css" />
   <style>
     body {
       margin: 0;
       display: flex;
-      flex-direction: row;
-      height: 100vh;
+      flex-direction: column;
+      min-height: 100vh;
       background: #008080 url('https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_XP_Bliss_wallpaper.jpg') center center no-repeat;
       background-size: cover;
       font-family: 'Segoe UI', sans-serif;
       color: #000;
     }
-    /* Banner oben */
-    #banner {
-      width: 100%;
-      background: linear-gradient(90deg, #0078d7, #00aaff);
+    header {
+      background: rgba(0, 128, 128, 0.9);
       color: white;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      font-size: 2rem;
+      padding: 12px 20px;
+      font-size: 1.6rem;
       font-weight: bold;
       text-align: center;
-      padding: 15px 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
+      user-select: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
     nav {
-      width: 200px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(8px);
       display: flex;
-      flex-direction: column;
-      padding: 10px;
-      border-right: 2px solid #ccc;
-      margin-top: 60px; /* damit Nav unter dem Banner startet */
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom: 2px solid #ccc;
+      flex-wrap: wrap;
     }
     nav button {
-      margin: 6px 0;
-      padding: 10px;
-      border: 2px outset #fff;
       background: #f0f0f0;
-      color: #000;
-      border-radius: 4px;
+      border: 2px outset #fff;
+      border-radius: 6px;
+      margin: 8px 6px;
+      padding: 10px 14px;
       cursor: pointer;
-      transition: 0.2s;
+      font-size: 1rem;
+      transition: background 0.3s ease;
     }
-    nav button:hover {
-      background: #dcdcdc;
+    nav button:hover, nav button.active {
+      background: #47e05b;
+      color: #fff;
+      border: 2px inset #369844;
     }
     .content {
       flex: 1;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.85);
+      max-width: 960px;
+      margin: 0 auto 40px auto;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
       overflow-y: auto;
-      padding-top: 80px; /* Abstand zum fixierten Banner */
+      min-height: 60vh;
     }
     .tab {
       display: none;
@@ -80,6 +77,8 @@
       border: 2px inset #ccc;
       border-radius: 4px;
       margin-top: 10px;
+      font-size: 1rem;
+      font-family: inherit;
     }
     audio {
       width: 100%;
@@ -96,11 +95,49 @@
       justify-content: center;
       align-items: center;
       z-index: 9999;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    /* Aero Webring styling */
+    #aero-ring {
+      background: linear-gradient(
+        to top,
+        rgb(5, 5, 5) 0%,
+        rgb(22, 22, 22) 47%,
+        rgb(34, 34, 34) 47%,
+        rgb(163, 163, 163) 100%
+      );
+      border-radius: 8px;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.5),
+        inset 0 2px 1px rgba(255, 255, 255, 0.2),
+        inset 0 -2px 1px rgba(0, 0, 0, 0.35);
+      margin: 10px auto 0 auto;
+      padding: 0.75rem;
+      max-width: 15rem;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #aero-ring a,
+    #aero-ring a:visited {
+      color: white !important;
+    }
+    #aero-ring a:focus,
+    #aero-ring a:hover {
+      color: #47e05b !important;
+    }
+    #aero-ring a:active {
+      color: #72f183 !important;
+    }
+    /* Banner image styling */
+    #banner {
+      max-width: 960px;
+      margin: 20px auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
     }
   </style>
 </head>
-<body onload="hideLoader()">
-
+<body onload="hideLoader(); showTab('start')">
   <div id="loaderContainer">
     <div style="text-align:center;">
       <p>Loading Aero Multicenter...</p>
@@ -108,66 +145,36 @@
     </div>
   </div>
 
-  <!-- Banner oben -->
-  <header id="banner">
+  <header>
     Aero's Basement
   </header>
 
   <nav>
-    <button onclick="showTab('start')">🏠 Startpage</button>
-    <button onclick="showTab('youtube')">📺 YouTube</button>
-    <button onclick="showTab('chat')">💬 Chatroom</button>
-    <button onclick="showTab('music')">🎵 Music</button>
-    <button onclick="showTab('feedback')">📝 Feedback</button>
+    <button onclick="showTab('start')" id="btn-start" class="active">🏠 Startpage</button>
+    <button onclick="showTab('youtube')" id="btn-youtube">📺 YouTube</button>
+    <button onclick="showTab('chat')" id="btn-chat">💬 Chatroom</button>
+    <button onclick="showTab('music')" id="btn-music">🎵 Music</button>
+    <button onclick="showTab('games')" id="btn-games">🎮 Games</button>
+    <button onclick="showTab('wallpapers')" id="btn-wallpapers">🖼️ Wallpapers</button>
+    <button onclick="showTab('feedback')" id="btn-feedback">📝 Feedback</button>
+    <button onclick="showTab('about')" id="btn-about">ℹ️ About</button>
+    <button onclick="showTab('links')" id="btn-links">🔗 Links</button>
+    <button onclick="showTab('tools')" id="btn-tools">🛠️ Tools</button>
+    <button onclick="showTab('extras')" id="btn-extras">✨ Extras</button>
   </nav>
 
   <div class="content">
     <div id="start" class="tab active">
       <h1>Welcome to Aero Multicenter!</h1>
-      <p>Paste a YouTube link in the YouTube tab to preview it here:</p>
-      <iframe id="previewFrame" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allowfullscreen onload="setProgress(60)"></iframe>
-      <p style="margin-top: 15px; font-size: 0.9em; color: #000;">
-        v1.0.1 <span style="background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">BETA</span>
-      </p>
+      <a href="https://frutigeraeroarchive.org/">
+        <img src="https://frutigeraeroarchive.org/images/ads/fa_archive_180x180.png" alt="Frutiger Aero Archive" id="banner" />
+      </a>
 
       <div id="aero-ring">
         <script src="https://frutigeraeroarchive.org/javascript/aero-webring.js"></script>
       </div>
 
-      <!-- CSS below is optional -->
-      <style>
-        #aero-ring {
-          background: linear-gradient(
-          to top,
-          rgb(5, 5, 5) 0%,
-          rgb(22, 22, 22) 47%,
-          rgb(34, 34, 34) 47%,
-          rgb(163, 163, 163) 100%
-        );
-          border-radius: 8px;
-          box-shadow: 0 0 4px rgba(0, 0, 0, 0.5),
-          inset 0 2px 1px rgba(255, 255, 255, 0.2),
-          inset 0 -2px 1px rgba(0, 0, 0, 0.35);
-          margin: 10px auto 0px auto;
-          padding: 0.75rem;
-          max-width: 15rem;
-          font-family: Arial, sans-serif;
-        }
-
-        #aero-ring a,
-        #aero-ring a:visited {
-          color: white !important;
-        }
-        #aero-ring a:focus,
-        #aero-ring a:hover {
-          color: #47e05b !important;
-        }
-        #aero-ring a:active {
-          color: #72f183 !important;
-        }
-      </style>
-
-      <a href="https://frutigeraeroarchive.org/"><img src="https://frutigeraeroarchive.org/images/ads/fa_archive_180x180.png" alt="Frutiger Aero Archive"></a>
+      <p style="margin-top: 20px;">v1.0.2 <span style="background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">BETA</span></p>
     </div>
 
     <div id="youtube" class="tab">
@@ -180,11 +187,6 @@
     <div id="chat" class="tab">
       <h2>💬 xat.com Public Chatroom</h2>
       <iframe src="https://xat.com/embed/chat.php" allowfullscreen onload="setProgress(80)"></iframe>
-      <div style="margin-top:20px; text-align:center;">
-        <a href="https://frutigeraeroarchive.org/" target="_blank">
-          <img src="YOUR-IMAGE.jpg" alt="Visit Frutiger Aero Archive" width="300" style="border-radius:12px;" />
-        </a>
-      </div>
     </div>
 
     <div id="music" class="tab">
@@ -192,21 +194,22 @@
       <input type="text" id="musicInput" placeholder="Enter music URL (.mp3)" />
       <button onclick="updateMusic()">Play Music</button>
       <audio id="bgMusic" controls loop></audio>
-
-      <div class="field-row" style="width: 300px">
-        <label for="range25">Volume:</label>
+      <div class="field-row" style="width: 300px;">
+        <label for="range26">Volume:</label>
         <label for="range26">Low</label>
-        <input
-          id="range26"
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value="0.5"
-          oninput="setVolume(this.value)"
-        />
-        <label for="range27">High</label>
+        <input id="range26" type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVolume(this.value)" />
+        <label for="range26">High</label>
       </div>
+    </div>
+
+    <div id="games" class="tab">
+      <h2>🎮 Games</h2>
+      <p>Coming soon! Stay tuned for fun games.</p>
+    </div>
+
+    <div id="wallpapers" class="tab">
+      <h2>🖼️ Wallpapers</h2>
+      <p>Browse some cool wallpapers here.</p>
     </div>
 
     <div id="feedback" class="tab">
@@ -215,12 +218,41 @@
       <textarea rows="5" placeholder="What's missing? What could be better?"></textarea>
       <button onclick="alert('Thanks for your feedback!')">Send Feedback</button>
     </div>
+
+    <div id="about" class="tab">
+      <h2>ℹ️ About Aero Multicenter</h2>
+      <p>
+        Aero Multicenter is a fan project created by <strong>Aero</strong>, inspired by the Frutiger Aero Archive.
+        It aims to bring music, videos, chat, and more into one cool hub.
+      </p>
+    </div>
+
+    <div id="links" class="tab">
+      <h2>🔗 Useful Links</h2>
+      <ul>
+        <li><a href="https://frutigeraeroarchive.org/" target="_blank" rel="noopener noreferrer">Frutiger Aero Archive</a></li>
+        <li><a href="https://xat.com" target="_blank" rel="noopener noreferrer">xat Chat</a></li>
+        <li><a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      </ul>
+    </div>
+
+    <div id="tools" class="tab">
+      <h2>🛠️ Tools</h2>
+      <p>Some useful tools coming soon!</p>
+    </div>
+
+    <div id="extras" class="tab">
+      <h2>✨ Extras</h2>
+      <p>Extra content and surprises will be here.</p>
+    </div>
   </div>
 
   <script>
     function showTab(tabId) {
       document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach((btn) => btn.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
+      document.getElementById('btn-' + tabId).classList.add('active');
     }
 
     function updateVideo() {
@@ -229,7 +261,6 @@
       if (videoId) {
         const embedURL = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
         document.getElementById('youtubeFrame').src = embedURL;
-        document.getElementById('previewFrame').src = embedURL;
         setProgress(70);
       }
     }
@@ -253,21 +284,17 @@
     }
 
     function hideLoader() {
-      let progress = 0;
-      const interval = setInterval(() => {
-        if (progress >= 100) {
-          clearInterval(interval);
-          document.getElementById('loaderContainer').style.display = 'none';
-        } else {
-          progress += 10;
-          document.getElementById('globalLoader').value = progress;
-        }
-      }, 150);
+      const loader = document.getElementById('loaderContainer');
+      if (loader) {
+        loader.style.display = 'none';
+      }
     }
 
-    function setProgress(val) {
-      const p = document.getElementById('globalLoader');
-      if (p) p.value = val;
+    function setProgress(value) {
+      const progress = document.getElementById('globalLoader');
+      if (progress) {
+        progress.value = value;
+      }
     }
   </script>
 </body>
