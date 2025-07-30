@@ -19,22 +19,22 @@
       background-size: cover;
     }
     header {
-      backdrop-filter: blur(8px);
-      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(12px);
+      background: rgba(0,0,0,0.6);
       padding: 1rem;
       text-align: center;
       border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
     }
     header h1 {
       margin: 0;
-      font-size: 2.2rem;
-      letter-spacing: 1px;
+      font-size: 2.4rem;
+      letter-spacing: 1.2px;
     }
     nav {
       width: 200px;
       height: 100vh;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(10px);
       border-right: 1px solid rgba(255,255,255,0.2);
       position: fixed;
@@ -51,10 +51,11 @@
       border: none;
       background: rgba(255, 255, 255, 0.2);
       color: white;
-      border-radius: 6px;
-      backdrop-filter: blur(5px);
+      border-radius: 10px;
+      backdrop-filter: blur(6px);
       transition: all 0.3s ease;
       cursor: pointer;
+      font-weight: bold;
     }
     nav button:hover {
       background: rgba(255,255,255,0.4);
@@ -71,19 +72,21 @@
     }
     iframe, audio {
       width: 100%;
-      border-radius: 8px;
+      border-radius: 12px;
       border: none;
       margin-top: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
     textarea, input[type="text"] {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin-top: 10px;
-      border-radius: 6px;
+      border-radius: 10px;
       border: none;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.15);
       color: white;
       backdrop-filter: blur(4px);
+      font-size: 1rem;
     }
     #aero-ring {
       margin-top: 30px;
@@ -128,13 +131,10 @@
     </div>
 
     <div id="music" class="tab">
-      <h2>Play Music</h2>
-      <input type="text" id="musicInput" placeholder="Enter MP3 URL">
+      <h2>Play SoundCloud Music</h2>
+      <input type="text" id="musicInput" placeholder="Enter SoundCloud track URL">
       <button onclick="updateMusic()">Play</button>
-      <audio id="bgMusic" controls loop></audio>
-      <br><br>
-      <label>Volume:</label>
-      <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVolume(this.value)">
+      <iframe id="bgMusic" height="166" scrolling="no" frameborder="no" allow="autoplay"></iframe>
     </div>
 
     <div id="feedback" class="tab">
@@ -158,13 +158,8 @@
 
     function updateMusic() {
       const url = document.getElementById('musicInput').value;
-      const player = document.getElementById('bgMusic');
-      player.src = url;
-      player.play();
-    }
-
-    function setVolume(val) {
-      document.getElementById('bgMusic').volume = val;
+      const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&auto_play=true`;
+      document.getElementById('bgMusic').src = embedUrl;
     }
 
     function hideLoader() {
